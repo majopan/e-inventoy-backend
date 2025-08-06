@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Información de Usuario con Dispositivo Asignado</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #e2e8f0;
+            background-color: #0f172a;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: #1e293b;
+            border-radius: 16px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            border: 1px solid #334155;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%);
+            color: white;
+            padding: 32px 24px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .header h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.025em;
+        }
+
+        .header-subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+
+        .content {
+            padding: 32px 24px;
+        }
+
+        .alert {
+            background: linear-gradient(135deg, #4338ca 0%, #3730a3 100%);
+            border: 1px solid #6366f1;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 32px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .alert-text {
+            color: #e0e7ff;
+            font-weight: 600;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .info-grid {
+            display: grid;
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .info-item {
+            background: #1e293b;
+            border: 1px solid #1e293b;
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .info-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            border-color: #7c3aed;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #94a3b8;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-value {
+            color: #f8fafc;
+            font-size: 1.1rem;
+            font-weight: 500;
+            word-break: break-word;
+        }
+
+        .icon {
+            width: 16px;
+            height: 16px;
+            opacity: 0.7;
+        }
+
+        .note {
+            background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+            border-left: 4px solid #3b82f6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 32px 0;
+            color: #e0e7ff;
+            line-height: 1.6;
+        }
+
+        .footer {
+            background: #0f172a;
+            padding: 24px;
+            text-align: center;
+            border-top: 1px solid #334155;
+        }
+
+        .footer p {
+            color: #94a3b8;
+            font-size: 0.875rem;
+            margin-bottom: 8px;
+        }
+
+        .footer p:last-child {
+            margin-bottom: 0;
+            font-weight: 600;
+        }
+
+        .badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding: 10px;
+            }
+            
+            .header {
+                padding: 24px 16px;
+            }
+            
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .content {
+                padding: 24px 16px;
+            }
+            
+            .info-item {
+                padding: 16px;
+            }
+            
+            .footer {
+                padding: 20px 16px;
+            }
+        }
+
+        @media (min-width: 640px) {
+            .info-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-content">
+                <h1>Registro de Usuario con Dispositivo</h1>
+                <p class="header-subtitle">Nuevo registro en el sistema de control de acceso</p>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="alert">
+                <div class="alert-text">
+                    Se ha registrado un nuevo usuario con dispositivo asignado en el sistema. A continuación encontrará los detalles del registro. Por favor verifique la información y tome las acciones correspondientes según los protocolos de seguridad establecidos.
+                </div>
+            </div>
+            
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4zM18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"/>
+                        </svg>
+                        Tipo Documento
+                    </div>
+                    <div class="info-value">
+                        {% if visitante.tipo_documento == "CC" %}
+                            <span class="badge">CC</span> Cédula de Ciudadanía
+                        {% elif visitante.tipo_documento == "CE" %}
+                            <span class="badge">CE</span> Cédula de Extranjería
+                        {% elif visitante.tipo_documento == "PASAPORTE" %}
+                            <span class="badge">PASS</span> Pasaporte
+                        {% else %}
+                            {{ visitante.tipo_documento|default:"No especificado" }}
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-label">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"/>
+                        </svg>
+                        Número Documento
+                    </div>
+                    <div class="info-value">{{ visitante.documento|default:"No especificado" }}</div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-label">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
+                        </svg>
+                        Nombre Completo
+                    </div>
+                    <div class="info-value">{{ visitante.nombre_completo|default:"No especificado" }}</div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-label">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M6 6V5a3 3 0 013-3h2a3 3 0 013 3v1h2a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V8a2 2 0 012-2h2zm4-3a1 1 0 00-1 1v1h2V4a1 1 0 00-1-1zM4 9v7h12V9H4z" clip-rule="evenodd"/>
+                        </svg>
+                        Cargo
+                    </div>
+                    <div class="info-value">{{ visitante.cargo|default:"No especificado" }}</div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-label">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+                        </svg>
+                        Teléfono
+                    </div>
+                    <div class="info-value">{{ visitante.telefono|default:"No especificado" }}</div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-label">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+                            <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+                        </svg>
+                        Email
+                    </div>
+                    <div class="info-value">{{ visitante.email|default:"No especificado" }}</div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/>
+                        </svg>
+                        Marca Dispositivo
+                    </div>
+                    <div class="info-value">{{ visitante.marca_dispositivo|default:"No especificado" }}</div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm0 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V8zm0 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1v-2z" clip-rule="evenodd"/>
+                        </svg>
+                        Serial Dispositivo
+                    </div>
+                    <div class="info-value">{{ visitante.serial|default:"No especificado" }}</div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-label">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
+                        </svg>
+                        Fecha/Hora
+                    </div>
+                    <div class="info-value">{{ fecha }}</div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-label">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clip-rule="evenodd"/>
+                        </svg>
+                        Registrado por
+                    </div>
+                    <div class="info-value">{{ solicitante }}</div>
+                </div>
+            </div>
+            
+            <div class="note">
+                <strong>Acción requerida:</strong> Por favor verifique que toda la información proporcionada sea correcta y cumpla con los protocolos de seguridad. Si detecta alguna inconsistencia o actividad sospechosa, notifique inmediatamente al equipo de seguridad informática.
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Este es un mensaje automático generado por el sistema de control de acceso. Por favor no responda a este correo.</p>
+            <p>&copy; {% now "Y" %} EmergiaCC - Todos los derechos reservados</p>
+        </div>
+    </div>
+</body>
+</html>
